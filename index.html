@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philip Varghese — Biomedicine Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --ink: #1a1612;
+    --accent: #c84b2f;
+    --accent2: #2f6bc8;
+    --muted: #8a8070;
+    --card: #edeae0;
+    --border: #d4cfc4;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: multiply;
+  }
+  .cursor.big { width: 40px; height: 40px; background: var(--accent2); opacity: 0.4; }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.5;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 8rem 3rem 4rem;
+    gap: 2rem;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left { position: relative; z-index: 2; }
+
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.3rem 0.8rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 42ch;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 2rem;
+    background: var(--ink);
+    color: var(--bg);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: background 0.2s;
+  }
+  .hero-cta:hover { background: var(--accent); }
+
+  .hero-cta-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 2rem;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+  }
+  .hero-cta-ghost:hover { background: var(--ink); color: var(--bg); }
+
+  .hero-right {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-blob {
+    width: 380px; height: 380px;
+    background: var(--card);
+    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    animation: morph 8s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes morph {
+    0%, 100% { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
+    33% { border-radius: 40% 60% 45% 55% / 60% 40% 55% 45%; }
+    66% { border-radius: 55% 45% 60% 40% / 45% 55% 50% 50%; }
+  }
+
+  .hero-initials {
+    font-family: 'DM Serif Display', serif;
+    font-size: 6rem;
+    color: var(--border);
+    user-select: none;
+    letter-spacing: -0.05em;
+  }
+
+  .hero-blob::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; right: -20px;
+    width: 120px; height: 120px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+
+  .year-badge {
+    position: absolute;
+    top: 2rem; right: -1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    padding: 0.4rem 1rem;
+    transform: rotate(3deg);
+  }
+
+  section { padding: 6rem 3rem; position: relative; }
+
+  .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 4rem; }
+  .section-num { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -0.02em; line-height: 1.1; }
+
+  #about { background: var(--ink); color: var(--bg); }
+  #about .section-num { color: var(--accent); }
+  #about .section-title { color: var(--bg); }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .about-text { font-size: 0.85rem; line-height: 2; color: #b0a898; }
+  .about-text p + p { margin-top: 1rem; }
+
+  .about-facts { display: grid; gap: 1.5rem; }
+  .fact { border-top: 1px solid #333; padding-top: 1rem; }
+  .fact-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+  .fact-value { font-family: 'Syne', sans-serif; font-size: 0.95rem; color: var(--bg); }
+
+  #education { background: var(--bg); }
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--border); }
+  .timeline-item { position: relative; padding-bottom: 3rem; padding-left: 2rem; }
+  .timeline-item::before { content: ''; position: absolute; left: -2.35rem; top: 0.4rem; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
+  .timeline-year { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .timeline-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .timeline-sub { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.8rem; }
+  .timeline-desc { font-size: 0.78rem; line-height: 1.9; color: var(--muted); max-width: 55ch; }
+  .cert-list { list-style: none; margin-top: 0.8rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .cert-list li { font-size: 0.72rem; color: var(--muted); padding-left: 1rem; position: relative; }
+  .cert-list li::before { content: '↳'; position: absolute; left: 0; color: var(--accent); }
+
+  #experience { background: var(--card); }
+  .exp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5px; background: var(--border); border: 1px solid var(--border); }
+  .exp-card { background: var(--bg); padding: 2rem; transition: background 0.2s; }
+  .exp-card:hover { background: var(--ink); color: var(--bg); }
+  .exp-card:hover .exp-role, .exp-card:hover .exp-desc { color: #b0a898; }
+  .exp-card:hover .exp-year, .exp-card:hover .exp-org { color: var(--accent); }
+  .exp-year { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; }
+  .exp-org { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.6rem; }
+  .exp-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .exp-role { font-size: 0.72rem; color: var(--muted); margin-bottom: 1rem; }
+  .exp-desc { font-size: 0.75rem; line-height: 1.9; color: var(--muted); }
+
+  #projects { background: var(--bg); }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
+  .project-card { border: 1px solid var(--border); padding: 2rem; position: relative; overflow: hidden; transition: border-color 0.2s, transform 0.2s; }
+  .project-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .project-card:hover::before { transform: scaleX(1); }
+  .project-tag { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent2); margin-bottom: 1rem; }
+  .project-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.8rem; }
+  .project-desc { font-size: 0.75rem; line-height: 1.9; color: var(--muted); }
+
+  #skills { background: var(--ink); color: var(--bg); }
+  #skills .section-title { color: var(--bg); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 2rem; }
+  .skill-group h3 { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #333; }
+  .skill-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-list li { font-size: 0.72rem; padding: 0.35rem 0.8rem; background: #2a2520; color: #b0a898; border: 1px solid #333; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+  .skill-list li:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+  #contact { background: var(--bg); }
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+  .contact-tagline { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.2; letter-spacing: -0.02em; }
+  .contact-tagline em { font-style: italic; color: var(--accent); }
+  .contact-links { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem; }
+  .contact-link { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--ink); font-size: 0.8rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; transition: color 0.2s; }
+  .contact-link:hover { color: var(--accent); }
+  .contact-link-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+  .contact-link-val { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.95rem; }
+  .contact-arrow { margin-left: auto; font-size: 1.2rem; opacity: 0; transition: opacity 0.2s, transform 0.2s; }
+  .contact-link:hover .contact-arrow { opacity: 1; transform: translateX(4px); }
+
+  footer { background: var(--ink); color: var(--muted); text-align: center; padding: 2rem 3rem; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 4rem; }
+    .hero-right { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .section-header { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<nav>
+  <a href="#hero" class="nav-logo">Philip V. ✦</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Open to opportunities · Linköping, Sweden</div>
+    <h1>Philip<br><em>Varghese</em></h1>
+    <p class="hero-sub">
+      Industrial & Experimental Biomedicine student at Linköping University. Cancer biology researcher, life science event organiser, and freelance musician — curiosity is my constant.
+    </p>
+    <div class="hero-buttons">
+      <a href="#contact" class="hero-cta">Get in touch →</a>
+      <a href="https://www.linkedin.com/in/philipavarghese" target="_blank" class="hero-cta-ghost">LinkedIn ↗</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-blob">
+      <span class="hero-initials">PV</span>
+    </div>
+    <div class="year-badge">BSc 2026</div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About Me</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        I'm a final-year Industrial and Experimental Biomedicine student at Linköping University, with hands-on research experience in cancer pharmacology and a strong foundation in molecular techniques including RT-qPCR, Western Blotting, and RNA-seq.
+      </p>
+      <p>
+        Beyond the bench, I'm active in the life science community through Synapse Life Science Connect, where I organise events, lectures, and workshops bridging academia and industry.
+      </p>
+      <p>
+        Outside science, I'm a freelance musician and audio technician — and I volunteer at a school supporting kids with special needs. I believe the best scientists are curious about everything.
+      </p>
+    </div>
+    <div class="about-facts reveal">
+      <div class="fact">
+        <div class="fact-label">Location</div>
+        <div class="fact-value">Linköping, Sweden</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Degree</div>
+        <div class="fact-value">B.Sc. Industrial & Experimental Biomedicine</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Graduating</div>
+        <div class="fact-value">June 2026 · Linköping University</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Languages</div>
+        <div class="fact-value">English (Fluent) · Swedish (Intermediate)</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Originally from</div>
+        <div class="fact-value">Doha, Qatar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Education</h2>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2021 — June 2026</div>
+      <div class="timeline-title">B.Sc. Industrial and Experimental Biomedicine</div>
+      <div class="timeline-sub">Linköping University · Linköping, Sweden · 180 ECTS</div>
+      <div class="timeline-desc">
+        Comprehensive programme combining biomedical sciences with industry-facing skills. Core areas include cancer biology, pathology, protein chemistry, molecular diagnostics, pharmacology, and experimental research methods.
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">Graduated July 2021</div>
+      <div class="timeline-title">High School Diploma</div>
+      <div class="timeline-sub">Birla Public School · Doha, Qatar</div>
+      <div class="timeline-desc">
+        CGPA: 9.0 / 10 &nbsp;(86.2%) — Subjects: Biology, Chemistry, Mathematics, Physics, English.
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">Certifications</div>
+      <div class="timeline-title">Online Courses — Saylor Academy</div>
+      <div class="timeline-sub">Self-directed learning</div>
+      <ul class="cert-list">
+        <li>BIO 101: Introduction to Molecular and Cellular Biology</li>
+        <li>BUS 502: Strategic Marketing</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Experience</h2>
+  </div>
+  <div class="exp-grid">
+    <div class="exp-card reveal">
+      <div class="exp-year">Aug 2025 — Jan 2026</div>
+      <div class="exp-org">Linköping University</div>
+      <div class="exp-title">Cancer Pharmacology Research Intern</div>
+      <div class="exp-role">Oncology Research · Linköping, Sweden</div>
+      <div class="exp-desc">Investigated pharmacological effects on Multiple Myeloma cells. Gained hands-on experience in cancer cell biology, experimental design, and data analysis in an academic research setting.</div>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-year">Dec 2023 — Jun 2026</div>
+      <div class="exp-org">Synapse Life Science Connect</div>
+      <div class="exp-title">Event Organiser</div>
+      <div class="exp-role">Life Science Community · Linköping, Sweden</div>
+      <div class="exp-desc">Organising events, lectures, and workshops connecting academia and industry in the life science field. Building real bridges between students, researchers, and professionals.</div>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-year">Ongoing</div>
+      <div class="exp-org">Freelance</div>
+      <div class="exp-title">Audio Technician & Musician</div>
+      <div class="exp-role">Studio & Live Events</div>
+      <div class="exp-desc">Part-time audio technician for studio recordings and live events. Freelance musician combining a love of performance with the technical side of sound engineering.</div>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-year">Ongoing</div>
+      <div class="exp-org">Volunteer</div>
+      <div class="exp-title">School Volunteer</div>
+      <div class="exp-role">Special Needs Support</div>
+      <div class="exp-desc">Volunteering at a school supporting children with special needs — deepening empathy, patience, and interpersonal communication skills outside of the scientific world.</div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Projects &<br>Research</h2>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-tag">Research · Cancer Biology</div>
+      <div class="project-title">Multiple Myeloma Pharmacology</div>
+      <div class="project-desc">Research internship at Linköping University investigating pharmacological effects on Multiple Myeloma cells. Work spanned experimental design, cell-based assays, and interpretation of results in an oncology context.</div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-tag">Community · Life Science</div>
+      <div class="project-title">Synapse Life Science Events</div>
+      <div class="project-desc">Helping organise lectures, workshops, and networking events that bridge academia and industry. Developing skills in project coordination, communications, and community building in science.</div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-tag">Academic · Add your own</div>
+      <div class="project-title">Your Next Project</div>
+      <div class="project-desc">Add a thesis, lab report, independent study, or any other project here as your portfolio grows. This section is yours to expand.</div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Skills</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-group reveal">
+      <h3>Lab Techniques</h3>
+      <ul class="skill-list">
+        <li>RT-qPCR</li>
+        <li>Western Blotting</li>
+        <li>RNA-seq</li>
+        <li>Cell culture</li>
+        <li>Research support</li>
+      </ul>
+    </div>
+    <div class="skill-group reveal">
+      <h3>Scientific</h3>
+      <ul class="skill-list">
+        <li>Cancer Biology</li>
+        <li>Pharmacology</li>
+        <li>Pathology</li>
+        <li>Molecular Biology</li>
+        <li>Protein Chemistry</li>
+      </ul>
+    </div>
+    <div class="skill-group reveal">
+      <h3>Professional</h3>
+      <ul class="skill-list">
+        <li>Event Management</li>
+        <li>Strategic Marketing</li>
+        <li>Science Communication</li>
+        <li>Volunteer Leadership</li>
+      </ul>
+    </div>
+    <div class="skill-group reveal">
+      <h3>Other</h3>
+      <ul class="skill-list">
+        <li>Audio Engineering</li>
+        <li>Music Performance</li>
+        <li>English (Fluent)</li>
+        <li>Swedish (Intermediate)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-header reveal">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Contact</h2>
+  </div>
+  <div class="contact-inner">
+    <div class="reveal">
+      <div class="contact-tagline">Let's connect<br>and <em>build</em><br>something.</div>
+    </div>
+    <div class="contact-links reveal">
+      <a href="mailto:philipabraham182@gmail.com" class="contact-link">
+        <div>
+          <div class="contact-link-label">Email</div>
+          <div class="contact-link-val">philipabraham182@gmail.com</div>
+        </div>
+        <span class="contact-arrow">→</span>
+      </a>
+      <a href="tel:+460728451291" class="contact-link">
+        <div>
+          <div class="contact-link-label">Phone</div>
+          <div class="contact-link-val">+46 728 451 291</div>
+        </div>
+        <span class="contact-arrow">→</span>
+      </a>
+      <a href="https://www.linkedin.com/in/philipavarghese" target="_blank" class="contact-link">
+        <div>
+          <div class="contact-link-label">LinkedIn</div>
+          <div class="contact-link-val">linkedin.com/in/philipavarghese</div>
+        </div>
+        <span class="contact-arrow">→</span>
+      </a>
+      <div class="contact-link" style="cursor:default;">
+        <div>
+          <div class="contact-link-label">Location</div>
+          <div class="contact-link-val">Linköping, Sweden</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Philip Varghese — Industrial & Experimental Biomedicine · Linköping University</p>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, li').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
